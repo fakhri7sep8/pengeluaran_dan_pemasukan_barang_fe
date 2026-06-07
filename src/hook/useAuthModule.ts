@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosClient } from "@/lib/axiosClient";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie"; // 🌟 TAMBAHAN: Import library buat ngatur cookie
 
 export const useAuthModule = function () {
   const router = useRouter();
@@ -53,12 +54,27 @@ export const useAuthModule = function () {
   function useLogin() {
     const { mutate, isPending } = useMutation({
       mutationFn: loginUser,
-      onSuccess: function () {
+      onSuccess: function (response: any) { // 🌟 MODIFIKASI: Tangkap parameter response dari NestJS
+        // Ambil access_token dan refresh_token dari response data backend lo
+        const { access_token, refresh_token } = response.data;
+
+        // 🌟 MODIFIKASI: Simpan access_token ke cookie biar middleware gak amnesia
+        Cookies.set("access_token", access_token, { 
+          expires: 1, // Cookie aktif selama 1 hari
+          path: "/",  // Wajib '/' agar bisa dibaca di seluruh halaman Next.js
+        });
+
+        // (Opsional) Simpan juga refresh_token kalau sewaktu-waktu lo butuh di client side
+        if (refresh_token) {
+          Cookies.set("refresh_token", refresh_token, { expires: 7, path: "/" });
+        }
+
         Swal.fire({
           icon: "success",
           title: "Login berhasil",
           text: "Selamat datang!",
         });
+        
         router.push("/dashboard");
       },
       onError: function (error: any) {
@@ -100,11 +116,11 @@ export const useAuthModule = function () {
       mutationFn: forgotPassword,
       onSuccess: function () {
         Swal.fire({
-        icon: 'success',
-        title: 'Email terkirim',
-      }).then(() => {
-        router.push('/auth/reset-password');
-      });
+          icon: 'success',
+          title: 'Email terkirim',
+        }).then(() => {
+          router.push('/auth/reset-password');
+        });
       },
       onError: function (error: any) {
         Swal.fire({
@@ -115,7 +131,7 @@ export const useAuthModule = function () {
       },
     });
 
-    return { mutate  , isPending };
+    return { mutate , isPending };
   }
 
   function useResetPassword() {
