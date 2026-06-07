@@ -17,7 +17,7 @@ export default function Home() {
             Selamat Datang di PT. Sakka Kreasindo Perkasa
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-300 text-lg">
-            Masuk untuk mengelola dashboard atau daftar akun baru.
+            Masuk untuk mengelola dashboard atau 
           </p>
         </div>
 
@@ -28,12 +28,12 @@ export default function Home() {
           >
             Login
           </Link>
-          <Link
+          {/* <Link
             href="/auth/register"
             className="flex-1 flex items-center justify-center h-14 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 font-medium shadow-sm transform transition duration-300 hover:scale-105 hover:bg-gray-50 dark:hover:bg-gray-700"
           >
             Daftar
-          </Link>
+          </Link> */}
         </div>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-8">

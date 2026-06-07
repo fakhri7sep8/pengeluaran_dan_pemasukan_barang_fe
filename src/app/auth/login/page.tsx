@@ -85,7 +85,7 @@ const LoginPage = () => {
           </motion.button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+        {/* <p className="text-center text-sm text-gray-500 dark:text-gray-400">
           Belum punya akun?{" "}
           <span
             onClick={() => router.push("/auth/register")}
@@ -93,7 +93,7 @@ const LoginPage = () => {
           >
             Daftar
           </span>
-        </p>
+        </p> */}
       </motion.main>
     </div>
   );
